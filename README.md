@@ -8,6 +8,10 @@
 
 ![Static Badge](https://img.shields.io/badge/stable-2.0.0-blue)
 ![Static Badge](https://img.shields.io/badge/Web-Concept-blue)
+![Static Badge](https://img.shields.io/badge/HTML-%23E34F26?logo=html5&logoColor=white)
+![Static Badge](https://img.shields.io/badge/CSS3-%231572B6?logo=css3&logoColor=white)
+![Static Badge](https://img.shields.io/badge/JavaScript-%23F7DF1E?logo=javascript&logoColor=white)
+
 
 
 
