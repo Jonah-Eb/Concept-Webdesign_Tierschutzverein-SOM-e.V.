@@ -7,6 +7,8 @@
 </p>
 
 ![Static Badge](https://img.shields.io/badge/stable-2.0.0-blue)
+![Static Badge](https://img.shields.io/badge/Web-Concept-blue)
+
 
 
 # Webdesign Tierschutzverein SOM e.V.
