@@ -106,8 +106,8 @@ Please make sure to update tests as appropriate.
 ## Credits
 
 - Webdesign, Programming, Photos, edits ©: JonahEb
-- Tests on tablet devices: JonathSc
-- Tests on desktop devices: LiamDh
+- Tests on tablet devices: WillLin
+- Tests on desktop devices: SamelSM
 
 ## License
 
