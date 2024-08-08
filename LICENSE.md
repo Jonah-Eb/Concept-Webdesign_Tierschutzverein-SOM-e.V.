@@ -20,4 +20,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-# Please read https://tierheim-som.jonaheb.de/Readme.md
+## Please read [Readme.md](https://github.com/CoolKillerLP/Concept-Webdesign_Tierschutzverein-SOM-e.V./blob/main/README.md)
