@@ -125,4 +125,3 @@ This README has drawn upon several valuable resources to ensure clarity and effe
 If you have any further questions or need additional information, please feel free to reach out.
 
 #### (c) JonahEb 2024 DE
-- This Website is licensed under the MIT License.
