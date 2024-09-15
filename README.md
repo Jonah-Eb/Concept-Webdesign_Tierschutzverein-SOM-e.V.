@@ -74,7 +74,7 @@ For non-HTML formats, please convert to WordPress or a similar platform.
 
 ### Usage
 
-Use the well known command to copy the template
+Use the well known command to copy the template ;)
 
 ```bash
 # Copy the content
