@@ -66,7 +66,7 @@ This concept was developed with a modern style, aiming to attract younger person
 
 ### Install
 
-Copy files (https://gofile.me/7sM7L/ivDTtmYd7) and paste in Website - Database
+Copy files and paste in Website - Database
 
 ```
 For non-HTML formats, please convert to WordPress or a similar platform.
