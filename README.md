@@ -94,7 +94,7 @@ The pictures and videos used are either non-copyrighted or owned copyrighted pho
 
 ### Testing
 
-- Tested for _PC/Laptop/Tablet_ devices only!! --> Bug-free
+- Tested for _PC/Laptop/Tablet_ devices only!!
 
 Else feel free to contact me! [JonahEb contact](https://jonaheb.de/contact.html)
 
