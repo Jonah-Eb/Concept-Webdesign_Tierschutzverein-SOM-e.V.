@@ -51,7 +51,7 @@ It should serve as inspiration for a revised page.
 
 ## Why should I use this?
 
-This Web-concpt has been developed by an ui/ux designer and programmer. Therefore this concept
+This Web-concept has been developed by an ui/ux designer and programmer. Therefore this concept
 should bring not only a fresh look but also the necessary functionality and user experience
 enhancements to meet the needs of the users.
 
@@ -125,3 +125,4 @@ This README has drawn upon several valuable resources to ensure clarity and effe
 If you have any further questions or need additional information, please feel free to reach out.
 
 #### (c) JonahEb 2024 DE
+- This Website is licensed under the MIT License.
