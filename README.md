@@ -24,7 +24,8 @@
 This is a concept idea for the new website of the SOM animal shelter in Pfaffengruen.
 
 Note:
-This is only a concept and not a fully developed Website!
+- This is only a concept and not a fully developed Website!
+- This website is not finished yet and will take much more time to do so. So note that it can still contain bugs, errors, mistakes, dead ending links and else!
 
 ## Contents
 
