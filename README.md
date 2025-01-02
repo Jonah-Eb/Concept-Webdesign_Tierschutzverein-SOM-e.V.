@@ -112,7 +112,8 @@ Please make sure to update tests as appropriate.
 
 ## Credits
 
-- Webdesign, Programming, Photos, edits ©: JonahEb
+- Basic Template by radonmak templates
+- All photos by JonahEb
 - Tests on tablet devices: WillLin
 - Tests on desktop devices: SamelSM
 
