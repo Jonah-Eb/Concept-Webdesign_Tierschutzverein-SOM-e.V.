@@ -49,9 +49,9 @@ $(document).ready(function () {
 
 
 /* Preloader and animations */
-$(window).load(function () { // makes sure the whole site is loaded
-	$('#status').fadeOut(); // will first fade out the loading animation
-	$('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
+$(window).load(function () { 
+	$('#status').fadeOut();
+	$('#preloader').delay(350).fadeOut('slow'); // fadeout
 	$('body').delay(350).css({'overflow-y': 'visible'});
 
 	/* WOW Elements */

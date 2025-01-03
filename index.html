@@ -6,8 +6,8 @@
     <!--Page Title-->
     <title>Tierheim - SOM</title>
     <!--license-->
-    <meta name="copyright" content="© JonahEb, 2024. Licensed under CC BY-SA 4.0.">
-    <link rel="license" href="https://tierheim-som.jonaheb.de/LICENSE.md">
+    <meta name="copyright" content="© JonahEb, 2024. Licensed under MIT license">
+    <link rel="license" href="https://github.com/Jonah-Eb/Concept-Webdesign_Tierschutzverein-SOM-e.V./blob/main/LICENSE">
     <!--Meta Keywords and Description-->
     <meta name="keywords" content="" />
     <meta name="description" content="" />
@@ -51,6 +51,7 @@
       </div>
     </div>
     <!--End of Preloader-->
+
     <style>
       /* Stil für das Cookie-Banner */
       #cookie-banner {
@@ -162,6 +163,208 @@
 
     <!--End of Datenschutz Popup-->
 
+
+
+
+    <style>
+        /* Allgemeine Stile */
+        
+
+        /* Chat Box Styling */
+        .chat-box {
+            border: 1px solid #ddd;
+            width: 400px;
+            height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            bottom: 80px; /* Abstand vom unteren Rand */
+            left: 20px; /* Abstand vom linken Rand */
+            display: none; /* Initially hidden */
+            z-index: 1000; /* Ensure it appears on top */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        .chat-box.open {
+            display: block;
+            transform: translateY(0);
+        }
+        .chat-box.close {
+            display: none;
+            transform: translateY(100px);
+        }
+        .chat-input {
+            position: absolute;
+            bottom: 0;
+            width: calc(100% - 20px); /* Full width minus padding */
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            border-radius: 0 0 12px 12px;
+            display: flex;
+            align-items: center;
+        }
+        .chat-input textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: none; /* Prevent resizing */
+            font-size: 14px;
+        }
+        .chat-input button {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .chat-input button:hover {
+            background-color: #0056b3;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+            max-width: 99%;
+        }
+        .chat-message:nth-child(odd) {
+            background-color: #d0e1ff;
+        }
+
+        /* Chat Button Styling */
+        .chat-button {
+            position: fixed;
+            bottom: 20px; /* Distance from the bottom */
+            left: 20px; /* Distance from the left */
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000; /* Ensure it appears on top */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .chat-button:hover {
+            background-color: #6ca5e2;
+            transform: scale(1.1);
+        }
+        .chat-button img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+<div>
+    <!-- Chat Button -->
+    <div class="chat-button" id="chatButton">
+        <!-- Ensure the path is correct -->
+        <img src="/images/bubble-chat.png" alt="Chat Icon">
+    </div>
+
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatBox">
+        <!-- Chat messages will be appended here -->
+        <div id="chatContent">
+            <!-- Messages will be dynamically inserted here -->
+        </div>
+        <div class="chat-input">
+            <textarea id="messageInput" rows="3" placeholder="Ihre Nachricht..."></textarea>
+            <button onclick="sendMessage()">Senden</button>
+        </div>
+    </div>
+
+    <script>
+        const automatedResponses = [
+            "Vielen Dank für Ihre Nachricht! Wie lautet Ihr Name?",
+            "Danke für Ihren Namen! Und Ihre E-Mail-Adresse?",
+            "Vielen Dank für Ihre E-Mail-Adresse. Wir werden uns bald bei Ihnen melden."
+
+        ];
+
+        let step = 0;
+
+        function appendMessage(sender, message) {
+            const chatContent = document.getElementById('chatContent');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.textContent = `${sender}: ${message}`;
+            chatContent.appendChild(messageElement);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (message === '') return;
+
+            // Zeigt die Nachricht des Benutzers an
+            appendMessage('Sie', message);
+
+            // Antwort je nach Schritt
+            if (step < automatedResponses.length) {
+                setTimeout(() => {
+                    appendMessage('Helper', automatedResponses[step]);
+
+                    if (step === automatedResponses.length - 1) {
+                        sendToServer(message);
+                    }
+
+                    step++;
+                }, 1000);
+            }
+
+            input.value = '';
+        }
+
+        function sendToServer(message) {
+            fetch('/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message })
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+                console.error('Fehler beim Senden:', error);
+            });
+        }
+
+        // Event Listener für die Enter-Taste
+        document.getElementById('messageInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Verhindert das Zeilenumbruch
+                sendMessage();
+            }
+        });
+
+        // Event Listener für den Chat Button
+        document.getElementById('chatButton').addEventListener('click', function() {
+            const chatBox = document.getElementById('chatBox');
+            const isVisible = chatBox.style.display === 'block';
+            chatBox.style.display = isVisible ? 'none' : 'block';
+            chatBox.className = isVisible ? 'chat-box close' : 'chat-box open';
+        });
+    </script>
+</div>
+
+
+
     <div class="page-border" data-wow-duration="0.7s" data-wow-delay="0.2s">
       <div
         class="top-border wow fadeInDown animated"
@@ -189,19 +392,23 @@
               <!--Logo-->
               <div id="logo">
                 <!--Logo that is shown on the banner-->
-                <img
-                  src="images/Logo/cropped-logo-farbe-2.png"
-                  id="banner-logo"
-                  alt="Landing Page"
-                />
+                <a href="/index.html">
+                  <img
+                    src="images/Logo/cropped-logo-farbe-2.png"
+                    id="banner-logo"
+                    alt="Landing Page"
+                  />
+                </a>
                 <!--End of Banner Logo-->
 
                 <!--The Logo that is shown on the sticky Navigation Bar-->
-                <img
-                  src="images/Logo/cropped-logo-farbe-2.png"
-                  id="navigation-logo"
-                  alt="Landing Page"
-                />
+                <a href="#">
+                  <img
+                    src="images/Logo/cropped-logo-farbe-2.png"
+                    id="navigation-logo"
+                    alt="Landing Page"
+                  />
+                </a>
                 <!--End of Navigation Logo-->
               </div>
               <!--End of Logo-->
@@ -221,10 +428,10 @@
                   <!--<li>
                     <a
                       target="_blank"
-                      title="Twitter"
-                      href="http://www.twitter.com/username"
+                      title=""
+                      href="http://www."
                     >
-                      <i class="fa fa-twitter fa-1x"></i><span>Twitter</span>
+                      <i class="fa fa- fa-1x"></i><span></span>
                     </a>
                   </li>-->
                   <li>
@@ -249,16 +456,25 @@
                   <!--<li>
                     <a
                       target="_blank"
-                      title="behance"
-                      href="http://www.behance.net"
+                      title=""
+                      href="http://www."
                     >
-                      <i class="fa fa-behance fa-1x"></i><span>Behance</span>
+                      <i class="fa fa- fa-1x"></i><span></span>
                     </a>
                   </li>-->
                 </ul>
                 <!--End of Social Icons in Header-->
               </aside>
 
+
+
+              <!---->
+              <!---->
+              <!---->
+              <!---->
+              <!---->
+              <!---->
+              <!---->
               <!--Main Navigation-->
               <nav id="nav-main">
                 <ul>
@@ -269,7 +485,7 @@
                   </li>
 
                   <div class="dropdown">
-                    <a href="/aktuelles.html"
+                    <a href="#"
                       ><button class="dropbtn">ALLGEMEIN</button></a
                     >
                     <div class="dropdown-content">
@@ -282,36 +498,36 @@
                   <div class="dropdown">
                     <a href="#"><button class="dropbtn">TIERE</button></a>
                     <div class="dropdown-content">
-                      <a href="#">HUNDE</a>
-                      <a href="#">katzen</a>
-                      <a href="#">kleintiere</a>
-                      <a href="#">patenschaften</a>
-                      <a href="#">pensionstiere</a>
-                      <a href="#">schutzgebühren</a>
-                      <a href="#">wichtiges hierzu</a>
+                      <a href="/seiten/tiere/Hunde.html">HUNDE</a>
+                      <a href="/seiten/tiere/Katzen.html">katzen</a>
+                      <a href="/seiten/tiere/Kleintiere.html">kleintiere</a>
+                      <a href="/seiten/tiere/403_not_finished.html">patenschaften</a>
+                      <a href="/seiten/tiere/Pensionstiere.html">pensionstiere</a>
+                      <a href="/seiten/tiere/Schutzgebühren.html">schutzgebühren</a>
+                      <a href="/seiten/tiere/403_not_finished.html">wichtiges hierzu</a>
                     </div>
                   </div>
                   <div class="dropdown">
-                    <a href="#"><button class="dropbtn">KONTAKTE</button></a>
+                    <button class="dropbtn">KONTAKTE</button>
                     <div class="dropdown-content">
-                      <a href="#">kontaktübersicht</a>
-                      <a href="#">mitgliedschaft</a>
-                      <a href="#">antrag/patenschaft</a>
+                      <a href="/seiten/kontakte/Kontaktübersicht.html">kontaktübersicht</a>
+                      <a href="/seiten/kontakte/Mitgliedsantrag.html">mitgliedschaft</a>
+                      <a href="/seiten/kontakte/Patenschaft.html">antrag/patenschaft</a>
                     </div>
                   </div>
                   <div class="dropdown">
                     <a href="#"><button class="dropbtn">SPENDEN</button></a>
                     <div class="dropdown-content">
-                      <a href="#">ihre spende hilft</a>
-                      <a href="#">sponsoren</a>
+                      <a href="/403.html">ihre spende hilft</a>
+                      <a href="/seiten/spenden/Sponsoren.html">sponsoren</a>
                     </div>
                   </div>
                   <div class="dropdown">
                     <a href="#"><button class="dropbtn">VEREIN</button></a>
                     <div class="dropdown-content">
-                      <a href="">Vorstand</a>
-                      <a href="#">Einrichtungen</a>
-                      <a href="#">chronik</a>
+                      <a href="/seiten/verein/Vorstand.html">Vorstand</a>
+                      <a href="/seiten/verein/Einrichtungen.html">Einrichtungen</a>
+                      <a href="/seiten/tiere/403_not_finished.html">chronik</a>
                     </div>
                   </div>
                   <style>
@@ -377,13 +593,27 @@
           </div>
         </div>
         <!--End of Header-->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+
 
         <!--Banner Content-->
         <div id="banner-content" class="row clearfix">
           <div class="col-38">
             <div class="section-heading" >
               <h1>Tierheim Pfaffengrün</h1>
-              <h2>Ihr Tierheim im Landkreis Hof / Saale</h2>
+              <h2>
+                Ihr Tierheim im Landkreis Hof / Saale 
+                <br><br>
+                  Bitte beachten Sie, dass es sich um ein Konzept handelt, das noch nicht abgeschlossen ist und Fehler enthalten kann. <br>
+                 Bei Problemen <a href="https://jonaheb.de/contact.html" target="_blank">kontaktieren</a>  Sie mich bitte.
+              </h2>
             </div>
 
             <!--Call to Action-->
@@ -405,7 +635,6 @@
                 <h2 class="section-title">Tierschutzverein SOM e.V.</h2>
                 <p class="section-subtitle">
                   Schwarzenbach/Saale, Oberkotzau, Münchberg, Helmbrechts und Umgebung
-                  
                 </p>
               </div>
             </div>
@@ -426,9 +655,8 @@
                   <p>
                     <hr>
                   <div class="div-img img:hover img">
-                    <img src="/images/Tierheim/Startseite/tierheim-logo3-tiere.jpg" alt="Tierheim Pfaffengruen Bild">
+                    <img id="expandable-image" src="/images/Tierheim/Startseite/tierheim-logo3-tiere.jpg" alt="Tierheim Pfaffengruen Bild">
                     <style>
-
                       .img:hover{
                         transform:scale(1.5);
                       }
@@ -437,8 +665,9 @@
                         transition: transform .2s;
                         margin:0 auto;
                       }
-
                     </style>
+                   
+                    
                   </div>
                   </p>
                 </div>
@@ -479,12 +708,6 @@
           </div>
         </section>
         <!--End of Introduction-->
-
-
-
-
-
-
 
 
 
@@ -617,8 +840,8 @@
             </blockquote>
             <!-- End of Testimonial-->
           </div>
-          <a href="/seiten/allgemein/aktuelles.html" class="button page-scroll fadeIn wow" style="color: black; width: 50%; text-align: center; margin-left: auto; margin-right: auto;" target="_blank">ALLE HUNDE</a>
-
+          <a href="/seiten/tiere/" class="button page-scroll fadeIn wow" style="color: black; width: 50%; text-align: center; margin-left: auto; margin-right: auto;" target="_blank">ALLE HUNDE</a>
+          <p>(veraltete Daten)</p>
         </aside>
         <!--End of Testimonials-->
 
@@ -640,8 +863,8 @@
               <img class="img:hover img" src="/images/Tierheim/Startseite/Katzen/hugo.jpg" alt="User" />
               <q
                 >Hugo ist ein lieber und menschenbezogener Kater und er liebt Streicheleinheiten. 
-                Aber er gibt auch zu verstehen wenn es genug ist.</q
-              >
+                Aber er gibt auch zu verstehen wenn es genug ist.
+              </q> <br>
               <footer style="font-size: 125%;">Hugo</footer>
             </blockquote>
             <!-- End of Testimonial-->
@@ -651,7 +874,7 @@
               <img class="img:hover img" src="/images/Tierheim/Startseite/Katzen/kaja.jpg" alt="User" />
               <q
                 >Kaja ist eine ganz liebe und verschmuste junge Katze und eher etwas rhuiger und sensibler als ihr Bruder.
-                 Sie spielt auch sehr gern, aberanders wie ihr Brüderchen.</q
+                 Sie spielt auch sehr gern, aber anders wie ihr Brüderchen.</q
               >
               <footer style="font-size: 125%;">Kaja</footer>
             </blockquote>
@@ -687,7 +910,7 @@
               <h2 class="section-title">Aktuelles</h2>
             </div>
 
-            <!--Pricing Block-->
+            <!-- Block-->
             <div class="pricing-block col-3 wow fadeInUp" data-wow-delay="0.4s">
               <div class="pricing-block-content">
                 <h3>Unterstützungsvorschlag</h3>
@@ -699,9 +922,9 @@
                 <a href="#" class="button">HILF UNS</a>
               </div>
             </div>
-            <!--End Pricing Block-->
+            <!--End  Block-->
 
-            <!--Pricing Block-->
+            <!-- Block-->
             <div
               class="pricing-block featured col-3 wow fadeInUp"
               data-wow-delay="0.6s"
@@ -716,9 +939,9 @@
                 <a href="/data/Rundschreiben-SOM-2023-gesamt.pdf" class="button">JETZT HERUNTERLADEN</a>
               </div>
             </div>
-            <!--End Pricing Block-->
+            <!--End  Block-->
 
-            <!--Pricing Block-->
+            <!-- Block-->
             <div class="pricing-block col-3 wow fadeInUp" data-wow-delay="0.8s">
               <div class="pricing-block-content">
                 <h3>Pflegestellen</h3>
@@ -730,17 +953,11 @@
                 <a href="#" class="button">MEHR</a>
               </div>
             </div>
-            <!--End Pricing Block-->
+            <!--End  Block-->
             <a href="/seiten/allgemein/Aktuelles.html" class="button page-scroll fadeIn wow" style="color: black; width: 50%; text-align: center; margin-left: auto; margin-right: auto;" target="_blank">ALLE BEITRÄGE</a>
           </div>
         </section>
-        <!--End of Pricing Tables-->
-
-
-
-
-
-
+        <!--End of  Tables-->
 
         <!--Patenschaften-->
         <section
@@ -752,7 +969,7 @@
               <h3>HILFE</h3>
               <h2 class="section-title">Patenschaften</h2>
             </div>
-            <!--Pricing Block-->
+            <!-- Block-->
             <div
               class="pricing-block featured col-3 wow fadeInUp"
               data-wow-delay="0.6s"
@@ -771,7 +988,6 @@
             </div>
             <!--End Partnerschaften-->
 <br>
-            
             <img src="/images/Tierheim/hunde/gallery-image-7.jpg" style="width: 60%; height: auto;" alt="Hund Strolch"/>
           </div>
         </section>
@@ -841,11 +1057,6 @@
           /></a>
         </aside>
         <!--End of Gallery-->
-
-
-
-
-
 
 
 
@@ -948,6 +1159,7 @@
               });
               </script>
 
+
               <a
                 target="_blank"
                 href="https://www.youtube.com/embed/_klJQQp9Fqk?si=gkPs-qIUMftdgFWt"
@@ -970,9 +1182,10 @@
         <!--End of Content Section-->
       </main>
       <!--End Main Content Area-->
-      <br>
 
-<hr>
+<br>
+
+      <hr>
        <!--Footer-->
       <footer id="landing-footer" class="clearfix" style="background-image: url(/images/schwarz.png); background-position-y: center;">
         <div class="row clearfix">
@@ -1023,11 +1236,12 @@
           <p id="copyright" class="col-2" style="width: 16%; text-align: center;">
             <br>
             <a                          style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><u>Bitte lesen!</u></a><br>
+            <a href="https://github.com/Jonah-Eb" target="_blank" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Github</a><br>
+            <a href="https://github.com/Jonah-Eb/Concept-Webdesign_Tierschutzverein-SOM-e.V./blob/main/LICENSE" target="_blank" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">License</a><br>
+            <a href="https://github.com/Jonah-Eb/Concept-Webdesign_Tierschutzverein-SOM-e.V./blob/main/README.md"  target="_blank" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">ReadMe</a><br>
+            <a href="/changelog.md"     style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Changelog</a><br>
             <a href="/datenschutz.html" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Datenschutz</a><br>
             <a href="/impressum.html"   style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Impressum</a><br>
-            <a href="/LICENSE.md"       style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">License</a><br>
-            <a href="/seiten/!Files/Readme.html" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">ReadMe</a><br>
-            <a href="/changelog.md"     style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Changelog</a><br>
             <a href="https://jonaheb.de/contact.html" style="font-size: larger; color: white;  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Bug Report</a><br>
           </p>
 
@@ -1074,7 +1288,7 @@
       <!--End of Footer-->
     </div>
 
-    <!-- Include JavaScript resources -->
+    <!-- Included JavaScript resources!! -->
     <script src="js/jquery.1.8.3.min.js"></script>
     <script src="js/wow.min.js"></script>
     <script src="js/featherlight.min.js"></script>
